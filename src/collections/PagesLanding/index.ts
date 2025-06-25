@@ -1,7 +1,5 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
@@ -20,10 +18,10 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { superAdminOrTenantUserAccess } from './access/superAdminOrTenantUser'
+import { superAdminOrTenantUserAccess } from '@/collections/PagesLanding/access/superAdminOrTenantUser'
 
-export const Pages: CollectionConfig<'pages'> = {
-  slug: 'pages',
+export const PagesLanding: CollectionConfig<'pages'> = {
+  slug: 'pages-landing',
   labels: {
     singular: 'Page',
     plural: 'Pages',
@@ -44,13 +42,13 @@ export const Pages: CollectionConfig<'pages'> = {
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     components: {
-      beforeListTable: ['@/collections/Pages/components/BeforeList'],
+      beforeListTable: ['@/collections/PagesLanding/components/BeforeList'],
     },
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
-          collection: 'pages',
+          collection: 'pages-landing',
           req,
         })
 
@@ -60,7 +58,7 @@ export const Pages: CollectionConfig<'pages'> = {
     preview: (data, { req }) =>
       generatePreviewPath({
         slug: typeof data?.slug === 'string' ? data.slug : '',
-        collection: 'pages',
+        collection: 'pages-landing',
         req,
       }),
     useAsTitle: 'title',
@@ -82,17 +80,17 @@ export const Pages: CollectionConfig<'pages'> = {
               return null
             }
 
-            const blogTenant = await req.payload.find({
+            const landingTenant = await req.payload.find({
               collection: 'tenants',
               where: {
                 slug: {
-                  equals: '/blog',
+                  equals: '/',
                 },
               },
             })
 
-            if (blogTenant.docs?.[0]?.id) {
-              return blogTenant.docs[0].id
+            if (landingTenant.docs?.[0]?.id) {
+              return landingTenant.docs[0].id
             }
 
             return null

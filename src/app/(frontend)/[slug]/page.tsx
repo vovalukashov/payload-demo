@@ -5,7 +5,7 @@ import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import { homeStatic } from '@/endpoints/seed/home-static'
+// import { homeStatic } from '@/endpoints/seed/home-static'
 
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
@@ -19,7 +19,7 @@ export async function generateStaticParams() {
     collection: 'pages',
     draft: false,
     limit: 1000,
-    overrideAccess: false,
+    overrideAccess: true,
     pagination: false,
     select: {
       slug: true,
@@ -48,16 +48,16 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { slug = 'home' } = await paramsPromise
   const url = '/' + slug
 
-  let page: RequiredDataFromCollectionSlug<'pages'> | null
+  // const page: RequiredDataFromCollectionSlug<'pages'> | null
 
-  page = await queryPageBySlug({
+  const page = await queryPageBySlug({
     slug,
   })
 
   // Remove this code once your website is seeded
-  if (!page && slug === 'home') {
-    page = homeStatic
-  }
+  // if (!page && slug === 'home') {
+  //   page = homeStatic
+  // }
 
   if (!page) {
     return <PayloadRedirects url={url} />
@@ -98,7 +98,7 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     draft,
     limit: 1,
     pagination: false,
-    overrideAccess: draft,
+    overrideAccess: true,
     where: {
       slug: {
         equals: slug,

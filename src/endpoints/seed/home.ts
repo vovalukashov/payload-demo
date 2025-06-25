@@ -4,15 +4,18 @@ import type { Media } from '@/payload-types'
 type HomeArgs = {
   heroImage: Media
   metaImage: Media
+  tenant: number
 }
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   heroImage,
   metaImage,
+  tenant,
 }) => {
   return {
     slug: 'home',
     _status: 'published',
+    tenant,
     hero: {
       type: 'highImpact',
       links: [

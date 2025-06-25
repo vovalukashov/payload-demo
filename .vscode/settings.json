@@ -36,5 +36,27 @@
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit"
     }
-  }
+  },
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "payload_demo",
+      "database": "payload_test1",
+      "username": "payload_user",
+      "password": "payload_pass"
+    },
+    {
+      "previewLimit": 50,
+      "server": "127.0.0.1",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "payload_test",
+      "database": "payload_test",
+      "username": "payload_user",
+      "password": "payload_pass"
+    }
+  ]
 }

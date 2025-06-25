@@ -9,15 +9,23 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    unoptimized: true,
     remotePatterns: [
-      ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
-        const url = new URL(item)
-
-        return {
-          hostname: url.hostname,
-          protocol: url.protocol.replace(':', ''),
-        }
-      }),
+      {
+        protocol: 'https',
+        hostname: 'payload-demo-seven.vercel.app',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'payload-demo-vovalukashovs-projects.vercel.app',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'payload-demo-vovalukashov-vovalukashovs-projects.vercel.app',
+        port: '',
+      },
     ],
   },
   reactStrictMode: true,

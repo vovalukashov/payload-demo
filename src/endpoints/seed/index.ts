@@ -99,11 +99,12 @@ export const seed = async ({
     payload.create({
       collection: 'users',
       data: {
-        name: 'Demo Author',
+        username: 'Demo Author',
         email: 'demo-author@example.com',
         password: 'password',
       },
     }),
+
     payload.create({
       collection: 'media',
       data: image1,
@@ -203,6 +204,26 @@ export const seed = async ({
     }),
   ])
 
+  payload.logger.info(`— Seeding tenant...`)
+
+  const tenant1 = await payload.create({
+    collection: 'tenants',
+    data: {
+      domain: 'blog.localhost',
+      slug: '/blog',
+      name: 'Blog',
+    },
+  })
+
+  const tenant2 = await payload.create({
+    collection: 'tenants',
+    data: {
+      domain: 'landing.localhost',
+      slug: '/landing',
+      name: 'Landing',
+    },
+  })
+
   payload.logger.info(`— Seeding posts...`)
 
   // Do not create posts with `Promise.all` because we want the posts to be created in order
@@ -213,7 +234,11 @@ export const seed = async ({
     context: {
       disableRevalidate: true,
     },
-    data: post1({ heroImage: image1Doc, blockImage: image2Doc, author: demoAuthor }),
+    data: post1({
+      heroImage: image1Doc,
+      blockImage: image2Doc,
+      author: demoAuthor,
+    }),
   })
 
   const post2Doc = await payload.create({
@@ -222,7 +247,11 @@ export const seed = async ({
     context: {
       disableRevalidate: true,
     },
-    data: post2({ heroImage: image2Doc, blockImage: image3Doc, author: demoAuthor }),
+    data: post2({
+      heroImage: image2Doc,
+      blockImage: image3Doc,
+      author: demoAuthor,
+    }),
   })
 
   const post3Doc = await payload.create({
@@ -231,10 +260,15 @@ export const seed = async ({
     context: {
       disableRevalidate: true,
     },
-    data: post3({ heroImage: image3Doc, blockImage: image1Doc, author: demoAuthor }),
+    data: post3({
+      heroImage: image3Doc,
+      blockImage: image1Doc,
+      author: demoAuthor,
+    }),
   })
 
   // update each post with related posts
+  payload.logger.info(`— Updating posts with related posts...`)
   await payload.update({
     id: post1Doc.id,
     collection: 'posts',
@@ -271,12 +305,12 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
+      data: home({ heroImage: imageHomeDoc, metaImage: image2Doc, tenant: tenant1.id }),
     }),
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: contactPageData({ contactForm: contactForm }),
+      data: contactPageData({ contactForm: contactForm, tenant: tenant1.id }),
     }),
   ])
 
